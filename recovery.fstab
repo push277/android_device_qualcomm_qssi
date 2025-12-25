@@ -1,0 +1,23 @@
+/system              ext4     /dev/block/by-name/system        flags=display="System";logical
+/system_ext          ext4     /dev/block/by-name/system_ext    flags=display="System Ext";logical
+/product             ext4     /dev/block/by-name/product       flags=display="Product";logical
+/vendor              ext4     /dev/block/by-name/vendor        flags=display="Vendor";logical
+/odm                 ext4     /dev/block/by-name/odm           flags=display="ODM";logical
+/my_product          ext4     /dev/block/by-name/my_product    flags=display="My Product";logical
+/my_engineering      ext4     /dev/block/by-name/my_engineering flags=display="My Engineering";logical
+/my_company          ext4     /dev/block/by-name/my_company    flags=display="My Company";logical
+/my_carrier          ext4     /dev/block/by-name/my_carrier    flags=display="My Carrier";logical
+/my_region           ext4     /dev/block/by-name/my_region     flags=display="My Region";logical
+/my_heytap           ext4     /dev/block/by-name/my_heytap     flags=display="My Heytap";logical
+/my_stock            ext4     /dev/block/by-name/my_stock      flags=display="My Stock";logical
+/my_preload          ext4     /dev/block/by-name/my_preload    flags=display="My Preload";logical
+/my_manifest         ext4     /dev/block/by-name/my_manifest   flags=display="My Manifest";logical
+/boot                emmc     /dev/block/by-name/boot          flags=display="Boot"
+/recovery            emmc     /dev/block/by-name/recovery      flags=display="Recovery"
+/cache               ext4     /dev/block/by-name/cache         flags=display="Cache"
+/data                f2fs     /dev/block/by-name/userdata      flags=display="Data";length=-16384
+/persist             ext4     /dev/block/by-name/persist       flags=backup=1;display="Persist"
+/metadata            ext4     /dev/block/by-name/metadata      flags=display="Metadata"
+/misc                emmc     /dev/block/by-name/misc          flags=display="Misc"
+/external_sd         auto     /dev/block/mmcblk1p1             flags=display="External SD";storage;wipeingui;removable
+/usb-otg             auto     /dev/block/sdg1                  flags=display="USB-OTG";storage;wipeingui;removable

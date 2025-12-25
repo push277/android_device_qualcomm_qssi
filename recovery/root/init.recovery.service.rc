@@ -1,0 +1,11 @@
+service qcom_decrypt /sbin/qcom_decrypt
+    class main
+    user root
+    group root
+    oneshot
+
+service qcom_decrypt_fbe /sbin/qcom_decrypt_fbe
+    class main
+    user root
+    group root
+    oneshot
