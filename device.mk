@@ -7,10 +7,14 @@
 
 LOCAL_PATH := device/qualcomm/qssi
 
-$(call inherit-product, vendor/twrp/config/common.mk)
+# 首先继承基础产品配置
 $(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 
+# 然后继承TWRP通用配置 - 这是关键！
+$(call inherit-product, vendor/omni/config/common.mk)
+
+# 设备特定配置
 PRODUCT_DEVICE := qssi
 PRODUCT_NAME := omni_qssi
 PRODUCT_BRAND := qti
