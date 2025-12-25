@@ -38,7 +38,7 @@ TARGET_SCREEN_DENSITY := 480
 # Kernel
 BOARD_BOOTIMG_HEADER_VERSION := 2
 BOARD_KERNEL_BASE := 0x00000000
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0x4a90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 loop.max_part=7 buildvariant=user
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0x4a90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 loop.max_part=7 buildvariant=user androidboot.selinux=permissive
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_RAMDISK_OFFSET := 0x01000000
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
@@ -64,26 +64,36 @@ endif
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
-BOARD_BOOTIMAGE_PARTITION_SIZE := 55779328
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 55779328
+BOARD_BOOTIMAGE_PARTITION_SIZE := 100663296      # Fixed: Actual size from device (96MB)
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 100663296  # Fixed: Actual size from device (96MB)
+BOARD_CACHEIMAGE_PARTITION_SIZE := 469762048     # Added: Cache partition size (448MB)
+BOARD_METADATAIMAGE_PARTITION_SIZE := 16777216   # Added: Metadata partition size (16MB)
 BOARD_HAS_LARGE_FILESYSTEM := true
-BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
-BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-TARGET_COPY_OUT_VENDOR := vendor
-BOARD_SUPER_PARTITION_SIZE := 9126805504 # TODO: Fix hardcoded value
-BOARD_SUPER_PARTITION_GROUPS := qualcomm_dynamic_partitions
-BOARD_QUALCOMM_DYNAMIC_PARTITIONS_PARTITION_LIST := system vendor product my_product my_engineering
-BOARD_QUALCOMM_DYNAMIC_PARTITIONS_SIZE := 9122611200 # TODO: Fix hardcoded value
+BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4   # Added: system_ext partition type
+BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4      # Added: product partition type
+BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := ext4          # Added: odm partition type
+BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs     # Fixed: Actual filesystem from device
+#BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+#TARGET_COPY_OUT_VENDOR := vendor
+BOARD_SUPER_PARTITION_SIZE := 8598323200         # Fixed: Actual super partition size (8GB)
+BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions  # Fixed: Actual dynamic partition group name
+BOARD_SUPER_PARTITION_BLOCK_DEVICES := system vendor product  # Added: Required for dynamic partitions
+BOARD_SUPER_PARTITION_METADATA_DEVICE := system  # Added: Required for dynamic partitions
+BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext product vendor odm my_product my_engineering my_company my_carrier my_region my_heytap my_stock my_preload my_manifest  # Fixed: Actual partition list from device
+BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 8594194432  # Fixed: Actual dynamic partitions size (super size - 4MB metadata)
 
 # Platform
 TARGET_BOARD_PLATFORM := bengal
+TARGET_BOARD_SUFFIX := _64
 
 # Recovery
 BOARD_INCLUDE_RECOVERY_DTBO := true
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
+TARGET_RECOVERY_QCOM_RTC_FIX := true      # Added: Fix QCOM RTC issues
+TARGET_USES_MKE2FS := true               # Added: Use mke2fs for filesystem creation
 
 # Security patch level
 VENDOR_SECURITY_PATCH := 2021-08-01
@@ -99,3 +109,47 @@ TW_EXTRA_LANGUAGES := true
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_USE_TOOLBOX := true
+
+# TWRP Dynamic Partitions Support - Added: Required for dynamic partitions
+TW_HAS_DYNAMIC_PARTITIONS := true
+TW_SUPER_PARTITION_PATH := /dev/block/by-name/super
+TW_SUPER_PARTITION_SIZE := 8598323200
+TW_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
+TW_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext product vendor odm my_product my_engineering my_company my_carrier my_region my_heytap my_stock my_preload my_manifest
+TW_QTI_DYNAMIC_PARTITIONS_SIZE := 8594194432
+
+# TWRP Encryption Support - Added: Required for FBE (File-Based Encryption)
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
+
+# TWRP Filesystem Support - Added: Support for various filesystems
+TW_INCLUDE_FUSE_EXFAT := true
+TW_INCLUDE_FUSE_NTFS := true
+TW_INCLUDE_NTFS_3G := true
+
+# TWRP Tools Support - Added: Various tools for recovery operations
+TW_INCLUDE_REPACKTOOLS := true
+TW_INCLUDE_RESETPROP := true
+TW_INCLUDE_LIBRESETPROP := true
+
+# TWRP Functional Configuration - Added: Various functional settings
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+TW_EXCLUDE_APEX := true
+TW_NO_SCREEN_BLANK := true
+TW_IGNORE_MISC_WIPE_DATA := true
+TW_SKIP_ADDITIONAL_FSTAB := true
+TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
+TARGET_RECOVERY_FSTAB := device/qualcomm/qssi/recovery.fstab
+
+
+# QCOM Platform Specific - Added: QCOM specific configurations
+BOARD_USES_QCOM_HARDWARE := true
+TARGET_USES_QCOM_BSP := true
+BOARD_USES_QCOM_FBE_DECRYPTION := true
+BOARD_USES_METADATA_PARTITION := true
+
+# Brightness Configuration - Added: Brightness control settings
+TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
+TW_MAX_BRIGHTNESS := 4095
+TW_DEFAULT_BRIGHTNESS := 2048
