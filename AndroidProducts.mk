@@ -6,13 +6,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/omni_qssi.mk \
-    $(LOCAL_DIR)/qssi.mk
+    $(LOCAL_DIR)/omni_qssi.mk
 
 COMMON_LUNCH_CHOICES := \
     omni_qssi-user \
     omni_qssi-userdebug \
-    omni_qssi-eng \
-    qssi-user \
-    qssi-userdebug \
-    qssi-eng
+    omni_qssi-eng

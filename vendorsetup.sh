@@ -5,6 +5,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# 这个文件可以留空，因为现在使用 COMMON_LUNCH_CHOICES
-# 在 AndroidProducts.mk 中已经定义了 COMMON_LUNCH_CHOICES
-# add_lunch_combo omni_qssi-eng  # 这行已过时
+add_lunch_combo omni_qssi-user
+add_lunch_combo omni_qssi-userdebug
+add_lunch_combo omni_qssi-eng
